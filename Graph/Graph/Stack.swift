@@ -11,15 +11,19 @@ final class Stack<T> {
     func pop() -> T? {
         storage.popLast()
     }
+    
+    func clear() {
+        storage = []
+    }
 }
 
 
 extension Stack: Sequence {
-    func makeIterator() -> stackIterator {
-        stackIterator(currentIndex: 0, stack: self)
+    func makeIterator() -> StackIterator {
+        StackIterator(currentIndex: 0, stack: self)
     }
     
-    struct stackIterator: IteratorProtocol {
+    struct StackIterator: IteratorProtocol {
         var currentIndex: Int
         var stack: Stack<T>
         

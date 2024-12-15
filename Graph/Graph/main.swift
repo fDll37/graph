@@ -1,17 +1,22 @@
-//
-//  main.swift
-//  Graph
-//
-//  Created by Данил Менделев on 15.12.2024.
-//
+let matrix = [
+    [0,1,1,0,0,0,1],
+    [1,0,1,1,0,0,0],
+    [1,1,0,0,0,0,0],
+    [0,1,0,0,1,0,0],
+    [0,0,0,1,0,1,0],
+    [0,0,0,0,1,0,1],
+    [1,0,0,0,0,1,0]
+]
 
-let stack = Stack<Int>()
+let size = matrix.count
+let graph = Graph(matrix: matrix, size: size)
 
-stack.push(new: 4)
-stack.push(new: 42)
-stack.push(new: 41)
-stack.push(new: 49)
 
-for value in stack {
-    print(value)
+if graph.BFS(begin: 1, end: 6) {
+    print("Path is TRUE")
+    for path in graph.paths {
+        print("path -> \(path)")
+    }
+} else {
+    print("Path is FALSE")
 }

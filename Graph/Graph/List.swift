@@ -97,3 +97,26 @@ final class List<T> {
         head = prev
     }
 }
+
+extension List: Sequence {
+    func makeIterator() -> ListIterator {
+        ListIterator(head: self.head)
+    }
+    
+    struct ListIterator: IteratorProtocol {
+        var current: NodeList<T>?
+        
+        init(head: NodeList<T>?) {
+            self.current = head
+        }
+        
+        mutating func next() -> T? {
+            if current?.next != nil {
+                let value = current?.value
+                current = current?.next
+                return value
+            }
+            return nil
+        }
+    }
+}
