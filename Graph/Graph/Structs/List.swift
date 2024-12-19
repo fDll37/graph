@@ -11,7 +11,7 @@ class NodeList<T> {
 final class List<T> {
     
     var head: NodeList<T>?
-    private var count = 0
+    var count = 0
     
     subscript(index: Int) -> T? {
         get {
@@ -95,6 +95,10 @@ final class List<T> {
         }
         
         head = prev
+    }
+    
+    func any() -> Bool {
+        return head?.next != nil ? true : false
     }
 }
 

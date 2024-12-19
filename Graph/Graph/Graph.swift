@@ -1,6 +1,4 @@
-
-
-final class Graph {
+class Graph {
 
     enum StateVertex {
         case detected
@@ -13,6 +11,7 @@ final class Graph {
     var vertex: [StateVertex]
     var edges: Stack<Edge>
     var paths: List<Int>
+    var components: List<List<Int>>
     
     init(matrix: [[Int]], size: Int) {
         self.matrix = matrix
@@ -20,9 +19,10 @@ final class Graph {
         self.vertex = Array(repeating: .noDetected, count: size)
         self.edges = Stack()
         self.paths = List()
+        self.components = List()
     }
     
-    private func clear() {
+    func clear() {
         for i in 0..<size {
             vertex[i] = .noDetected
         }

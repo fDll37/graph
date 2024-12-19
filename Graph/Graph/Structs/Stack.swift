@@ -15,6 +15,10 @@ final class Stack<T> {
     func clear() {
         storage = []
     }
+    
+    func any() -> Bool {
+        return storage.count > 0 ? true : false
+    }
 }
 
 
