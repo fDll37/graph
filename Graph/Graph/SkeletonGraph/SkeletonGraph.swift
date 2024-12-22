@@ -10,12 +10,16 @@ final class SkeletonGraph {
     var size: Int
     var vertex: [StateVertex]
     var edges: Queue<Edge>
+    var weightFull = 0
+    var weightMin = 0
+    var parent: [Int]
     
     init(matrix: [[Int]], size: Int) {
         self.matrix = matrix
         self.size = size
         self.vertex = Array(repeating: .noDetected, count: size)
         self.edges = Queue()
+        self.parent = []
     }
     
     

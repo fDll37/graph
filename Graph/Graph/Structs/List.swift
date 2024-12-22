@@ -93,6 +93,67 @@ final class List<T> {
     func any() -> Bool {
         return head != nil
     }
+    
+    func sort(by areInIncreasingOrder: (T, T) -> Bool) {
+        head = mergeSort(head, by: areInIncreasingOrder)
+    }
+
+    private func mergeSort(_ node: NodeList<T>?, by areInIncreasingOrder: (T, T) -> Bool) -> NodeList<T>? {
+        // Базовый случай: 0 или 1 элемент в списке
+        guard let node = node, node.next != nil else {
+            return node
+        }
+        
+        // Разделение списка на две половины
+        let (left, right) = split(node)
+        
+        // Рекурсивная сортировка каждой половины
+        let sortedLeft = mergeSort(left, by: areInIncreasingOrder)
+        let sortedRight = mergeSort(right, by: areInIncreasingOrder)
+        
+        // Слияние отсортированных половин
+        return merge(sortedLeft, sortedRight, by: areInIncreasingOrder)
+    }
+
+    private func split(_ node: NodeList<T>) -> (NodeList<T>?, NodeList<T>?) {
+        var slow: NodeList<T>? = node
+        var fast: NodeList<T>? = node.next
+        
+        // Найти середину списка
+        while fast != nil && fast?.next != nil {
+            slow = slow?.next
+            fast = fast?.next?.next
+        }
+        
+        let middle = slow?.next
+        slow?.next = nil // Разрываем список на две части
+        
+        return (node, middle)
+    }
+
+    private func merge(_ left: NodeList<T>?, _ right: NodeList<T>?, by areInIncreasingOrder: (T, T) -> Bool) -> NodeList<T>? {
+        let dummy = NodeList(value: left!.value) // Временная голова списка
+        var tail: NodeList<T>? = dummy
+        var left = left
+        var right = right
+        
+        while let leftNode = left, let rightNode = right {
+            if areInIncreasingOrder(leftNode.value, rightNode.value) {
+                tail?.next = leftNode
+                left = leftNode.next
+            } else {
+                tail?.next = rightNode
+                right = rightNode.next
+            }
+            tail = tail?.next
+        }
+        
+        // Добавляем оставшиеся элементы
+        tail?.next = left ?? right
+        
+        return dummy.next
+    }
+
 }
 
 extension List: Sequence {
