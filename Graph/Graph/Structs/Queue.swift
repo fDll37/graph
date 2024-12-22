@@ -17,3 +17,26 @@ final class Queue<T> {
     }
     
 }
+
+
+extension Queue: Sequence {
+    func makeIterator() -> QueueIterator {
+        QueueIterator(values: elements)
+    }
+    
+    struct QueueIterator: IteratorProtocol {
+        var values: [T]
+        
+        init(values: [T]) {
+            self.values = values
+        }
+        
+        mutating func next() -> T? {
+            if let _ = values.first {
+                let value = values.removeFirst()
+                return value
+            }
+            return nil
+        }
+    }
+}
