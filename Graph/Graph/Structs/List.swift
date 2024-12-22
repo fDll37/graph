@@ -7,31 +7,28 @@ class NodeList<T> {
     }
 }
 
-
 final class List<T> {
-    
     var head: NodeList<T>?
     var count = 0
     
     subscript(index: Int) -> T? {
         get {
-            guard index >= count  else { return nil }
+            guard index < count else { return nil }
             var current = head
-            
             for _ in 0..<index {
                 current = current?.next
             }
             return current?.value
         }
-        
         set {
-            guard index >= count  else { return }
+            guard index < count else { return }
             var current = head
-            
             for _ in 0..<index {
                 current = current?.next
             }
-            current?.value = newValue!
+            if let newValue = newValue {
+                current?.value = newValue
+            }
         }
     }
     
@@ -39,42 +36,38 @@ final class List<T> {
         let node = NodeList(value: value)
         var current = head
         var previous: NodeList<T>? = nil
-        count += 1
         
         if index == 0 || head == nil {
             node.next = head
             head = node
         } else {
             var i = 0
-            while i < index && i < count {
+            while i < index && current != nil {
                 previous = current
                 current = current?.next
                 i += 1
             }
-            
             previous?.next = node
             node.next = current
         }
+        count += 1
     }
     
     func remove(index: Int) {
+        guard index < count else { return }
         var current = head
         var previous: NodeList<T>? = nil
         
         if index == 0 {
             head = current?.next
-            count -= 1
         } else {
             for _ in 0..<index {
                 previous = current
                 current = current?.next
             }
-            
-            if previous == nil { return }
-            if current == nil { return }
             previous?.next = current?.next
-            count -= 1
         }
+        count -= 1
     }
     
     func clear() {
@@ -98,7 +91,7 @@ final class List<T> {
     }
     
     func any() -> Bool {
-        return head?.next != nil ? true : false
+        return head != nil
     }
 }
 
@@ -115,8 +108,7 @@ extension List: Sequence {
         }
         
         mutating func next() -> T? {
-            if current?.next != nil {
-                let value = current?.value
+            if let value = current?.value {
                 current = current?.next
                 return value
             }
